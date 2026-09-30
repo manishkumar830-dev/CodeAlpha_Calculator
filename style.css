@@ -1,0 +1,213 @@
+/* ---------- Colors and sizes in one place ---------- */
+:root {
+  --bg-dark: #050814;
+  --bg-navy: #0b1233;
+  --panel: rgba(255, 255, 255, 0.04);
+  --panel-border: rgba(140, 160, 255, 0.16);
+  --display-bg: rgba(3, 6, 20, 0.65);
+
+  --text: #eef1ff;
+  --text-muted: #8a94c2;
+
+  --btn-number: #1a2447;
+  --btn-number-hover: #243060;
+  --btn-function: #2c3766;
+  --btn-function-hover: #37447d;
+  --accent: #38bdf8;          /* operators */
+  --accent-soft: rgba(56, 189, 248, 0.14);
+  --accent-soft-hover: rgba(56, 189, 248, 0.26);
+  --equals-start: #fbbf24;    /* "=" button */
+  --equals-end: #f97316;
+  --error: #ff7b8a;
+}
+
+/* ---------- Reset ---------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 20% 10%, rgba(40, 70, 190, 0.35), transparent 55%),
+    linear-gradient(160deg, var(--bg-dark) 0%, var(--bg-navy) 60%, #0d1a4a 100%);
+  background-attachment: fixed;
+}
+
+/* ---------- Page layout ---------- */
+.page {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+}
+
+/* ---------- Calculator container ---------- */
+.calculator {
+  width: 100%;
+  padding: 20px;
+  border-radius: 28px;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.55),
+    0 0 50px rgba(56, 120, 255, 0.14);
+}
+
+/* ---------- Display ---------- */
+.display {
+  margin-bottom: 18px;
+  padding: 14px 18px;
+  min-height: 116px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: 4px;
+  border-radius: 18px;
+  background: var(--display-bg);
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.expression {
+  min-height: 1.4em;
+  font-size: 1rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.result {
+  max-width: 100%;
+  font-size: 2.9rem;
+  font-weight: 600;
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: right;
+}
+
+/* JavaScript adds these classes when the number gets long */
+.result.shrink-1 { font-size: 2.2rem; }
+.result.shrink-2 { font-size: 1.6rem; }
+.result.error    { color: var(--error); font-size: 2.2rem; }
+
+/* ---------- Keypad ---------- */
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  height: clamp(54px, 15vw, 68px);
+  border: none;
+  border-radius: 18px;
+  font: inherit;
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--text);
+  background: var(--btn-number);
+  box-shadow:
+    0 6px 14px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.12s ease, background-color 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+  background: var(--btn-number-hover);
+  transform: translateY(-2px);
+}
+
+/* Click effect. ".pressed" is added by JavaScript for keyboard presses. */
+.btn:active,
+.btn.pressed {
+  transform: scale(0.94);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* AC, DEL, % */
+.btn-function {
+  background: var(--btn-function);
+  color: #cdd6ff;
+  font-size: 1.1rem;
+}
+.btn-function:hover {
+  background: var(--btn-function-hover);
+}
+
+/* + − × ÷ */
+.btn-operator {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 1.7rem;
+}
+.btn-operator:hover {
+  background: var(--accent-soft-hover);
+}
+
+/* = */
+.btn-equals {
+  background: linear-gradient(135deg, var(--equals-start), var(--equals-end));
+  color: #1f1300;
+  font-weight: 700;
+  font-size: 1.8rem;
+  box-shadow: 0 8px 22px rgba(249, 115, 22, 0.38);
+}
+.btn-equals:hover {
+  background: linear-gradient(135deg, var(--equals-start), var(--equals-end));
+  filter: brightness(1.1);
+}
+
+/* "0" is twice as wide */
+.btn-zero {
+  grid-column: span 2;
+}
+
+/* ---------- Small screens ---------- */
+@media (max-width: 400px) {
+  .calculator { padding: 14px; border-radius: 24px; }
+  .keypad { gap: 9px; }
+  .result { font-size: 2.5rem; }
+  .result.shrink-1 { font-size: 1.9rem; }
+  .result.shrink-2 { font-size: 1.4rem; }
+}
+
+/* ---------- Larger screens ---------- */
+@media (min-width: 768px) {
+  .page { max-width: 400px; }
+  .title { font-size: 1.4rem; }
+}
+
+/* Respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  .btn { transition: none; }
+  .btn:hover { transform: none; }
+}
